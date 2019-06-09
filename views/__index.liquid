@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>FoodBot</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="FoodBot" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="Daily food poll for you Slack channel" />
+  <link href="https://fonts.googleapis.com/css?family=Khula:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+  <div class="main">
+    &nbsp;
+  </div>
+  <div class="side">
+    <div class="pa6 mh4">
+    {% if error %}<div class="error pa3 tc">{{ error }}</div>{% endif %}
+    {% if info %}<div class="status pa3 tc">{{ info }}</div>{% endif %}
+    <form method="post">
+      <section>
+        <label class="mv2 db lh-copy f5" for="question">Question</label>
+        <textarea name="question" required class="w-100" placeholder="What would you love for lunch tomorrow?" required></textarea>
+      </section>
+      <section class="mt4 options">
+        <a class="f6 f5-ns dib no-underline pa2 new_row fr ml2" href="#">Add row</a><label class="mv2 db lh-copy f5" for="options">Options</label>
+        <input type="text" name="options[]" placeholder="Pounded yam and egusi" class="w-100 mv1">
+        <div class="relative"><input type="text" name="options[]" placeholder="Ewa egoyin and dodo" class="w-100 mv1"><a href="#" class="remove">x</a></div>
+        <div class="relative"><input type="text" name="options[]" placeholder="Ofada rice and moimoi" class="w-100 mv1"><a href="#" class="remove">x</a></div>
+      </section>
+      <section class="mt4">
+        <label class="mv2 db lh-copy f5" for="email">Where should results be sent?</label>
+        <input type="email" name="email" placeholder="awesome@coy.email" class="w-100" required>
+      </section>
+      <section class="mt4">
+        <label class="mv2 db lh-copy f5" for="results">Poll closes and results are sent by</label>
+        <select class="w-100" required>
+          <option value="1">1pm</option>
+          <option value="2">2pm</option>
+          <option value="3">3pm</option>
+          <option value="4">4pm</option>
+          <option value="5">5pm</option>
+          <option value="6">6pm</option>
+          <option value="7">7pm</option>
+          <option value="8">8pm</option>
+          <option value="9">9pm</option>
+          <option value="10" selected>10pm</option>
+        </select>
+      </section>
+      <button type="submit" class="mt4 w-100">Connect to Slack</button>
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+document.querySelector('section.options').addEventListener("click", function(e){
+  if (e.target && e.target.className == 'remove') {
+    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+    return false;
+  }
+}, false);
+document.querySelector('.new_row').addEventListener("click", function(e){
+  var div = document.createElement('div');
+  div.className = 'relative';
+  div.innerHTML = '<input type="text" name="options[]" class="w-100 mv1"><a href="#" class="remove">x</a>';
+  document.querySelector('section.options').appendChild(div);
+}, false);
+</script>
+
+</body>
+</html>

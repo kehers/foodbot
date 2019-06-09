@@ -1,0 +1,173 @@
+body {
+  font-family: 'Khula', sans-serif;
+  color: #222;
+  background-color: #f6f7f9;/*#fef6ed;*/
+  transition: background-color 0.5s ease;
+}
+
+a {
+  color: #777;
+  text-decoration: none
+}
+a:hover {
+  text-decoration: underline;
+}
+.logo a {
+  color: #000;
+}
+
+.error {
+  background-color: #ea2a5d;
+  color: #fff;
+}
+.status {
+  background-color: #587eff;
+  color: #fff;
+}
+
+/*.main,
+.side {
+  position: fixed;
+  height: 100%
+}
+.main {
+  background: #fff1c7 url('../images/hero-2.jpg');
+  background-size: cover;
+  width: 60%;
+}
+.side {
+  margin-left: 60%;
+  width: 40%;
+}*/
+
+.remove {
+  position: absolute;
+  right: -15px;
+  font-weight: 700;
+  color: #c21f24;
+  top: 18px;
+}
+
+header {
+  background-color: #fff
+}
+.days {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.days li {
+  width: 20%;
+  float: left;
+}
+.days a {
+  display: block;
+  color: #667;
+  min-height: 100px;
+  padding: 2rem;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.days a:hover {
+  text-decoration: none;
+  color: #272ad0;
+}
+.days a.active {
+  color: #000;
+}
+.days svg {
+  color: #272ad0;
+  top: 5px;
+  position: relative;
+}
+
+/* Forms
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="text"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+textarea {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #D1D1D1;
+  border-radius: 3px;
+  box-shadow: none;
+  box-sizing: border-box; }
+select {
+  height: 38px;
+  padding: 6px 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #D1D1D1;
+  border-radius: 3px;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+/* Removes awkward default styles on some inputs for iOS */
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="text"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+textarea {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; }
+textarea {
+  min-height: 65px;}
+label {
+  font-weight: 700;
+  color: #222;
+}
+fieldset {
+  padding: 0;
+  border-width: 0; }
+input[type="checkbox"],
+input[type="radio"] {
+  display: inline; }
+input:disabled {
+  background-color: #fafafa
+}
+
+.button,
+button {
+  display: block;
+  padding: 10px 30px;
+  color: #222;
+  text-align: center;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #ffe194;
+  border: 1px solid #ffe194;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+a.button:hover,
+button:hover {
+  transition: background-color 0.5s ease;
+  background-color: #f7ca47;
+  text-decoration: none
+}
+button:disabled,
+button:disabled:hover
+ {
+  background-color: #ddd;
+  border: 1px solid #bbb;
+  cursor: default;
+}
+
+footer {
+  color: #667
+}

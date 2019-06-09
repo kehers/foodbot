@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>FoodBot</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="FoodBot" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="Daily food poll for Slack" />
+  <link href="https://fonts.googleapis.com/css?family=Khula:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+  <div class="center w-30-ns w-80 w-60-m pv5">
+    {% if error %}<div class="error pa3 tc">{{ error }}</div>{% endif %}
+    {% if info %}<div class="status pa3 tc">{{ info }}</div>{% endif %}
+
+    <h1 class="lh-title f2 mt5 mb1 logo"><a href="/">FoodBot</a></h1>
+
+    <section class="mt5">
+      <a href="/auth" class="button">Connect Slack</a>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>
