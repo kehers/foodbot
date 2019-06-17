@@ -69,6 +69,19 @@ exports.updatePoll = async (team, token, data) => {
   }
 }
 
+exports.todaysPoll = async(id) => {
+  try {
+    return await dbo.db().collection('responses').find({
+      team: id,
+      day: (new Date()).toDateString()
+    }).toArray();
+  }
+  catch(err) {
+    err = (err.message) ? err.message : err;
+    throw new Error(err);
+  }
+}
+
 exports.log = async(body) => {
 
   const user = body.user;
@@ -76,12 +89,22 @@ exports.log = async(body) => {
 
   try {
     // Get option
-    const doc = await db.collection('polls').findOne({
-      day: (new Date()).toDateString(),
-      team: body.team.id
+    const doc = await dbo.db().collection('polls').findOne({
+      team: body.team.id,
+      day: (new Date()).toDateString()
     });
 
     const slack = new WebClient(doc.token);
+
+    // Closed?
+    if (doc.closed) {
+      return await slack.chat.postEphemeral({
+        user: body.user.id
+        , channel: body.channel.id
+        , text: "FoodBot closed. No food for you 😛"
+      });
+    }
+
     await slack.chat.postEphemeral({
         user: body.user.id
         , channel: body.channel.id
@@ -89,7 +112,7 @@ exports.log = async(body) => {
       });
     const selection = doc.options[+choice];
 
-    await db.collection('responses').updateOne({
+    await dbo.db().collection('responses').updateOne({
       day: (new Date()).toDateString(),
       'user.id': user.id,
       team: body.team.id

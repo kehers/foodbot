@@ -72,14 +72,34 @@ module.exports = (router, passport) => {
   })
 
   router.get('/dashboard', async (req, res) => {
-    const channels = await Slack.getChannels(req.user.token);
-    res.render('dashboard', render(req, {
-      channels
-    }));
+    try {
+      const responses = await Accounts.todaysPoll(req.user.team.id);
+      if (responses && responses.length)
+        return res.render('poll-stats', render(req, {
+          responses
+        }));
+
+      const channels = await Slack.getChannels(req.user.token);
+      res.render('new-poll', render(req, {
+        channels
+      }));
+    }
+    catch(e) {
+      // ??
+      console.log(e);
+      res.redirect('/');
+    }
   });
   router.post('/dashboard', async (req, res) => {
-    await Accounts.updatePoll(req.user.team.id, req.user.token, req.body);
-    res.redirect('/dashboard');
+    try {
+      const response = await Accounts.updatePoll(req.user.team.id, req.user.token, req.body);
+      req.flash('info', 'Food options sent');
+      res.redirect('/dashboard');
+    }
+    catch(e) {
+      req.flash('error', e.message ? e.message : 'There has been an error. Try again later');
+      res.redirect('/dashboard');
+    }
   });
 
   // Logout
