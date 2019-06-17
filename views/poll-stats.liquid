@@ -21,9 +21,10 @@
       {% if error %}<div class="error pa3 tc">{{ error }}</div>{% endif %}
       {% if info %}<div class="status pa3 tc">{{ info }}</div>{% endif %}
 
-      {{ responses }}
+      <h3>Stats for today</h3>
+
       {% for response in responses %}
-      {{ response.user.name }} {{ response.selection }}
+        <p class="lh-copy"><strong>{{ response.user.name }}</strong> - {{ response.selection }}</p>
       {% endfor %}
     </div>
   </section>
