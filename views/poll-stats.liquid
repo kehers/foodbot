@@ -13,37 +13,25 @@
   <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
+ 
 
 </head>
 <body>
   <section>
-    <div class="center w-30-ns w-80 w-60-m pv5">
+    <div class="center w-30-ns w-80 w-60-m pv5" id="src" data-src='{{ obj }}'>
       {% if error %}<div class="error pa3 tc">{{ error }}</div>{% endif %}
       {% if info %}<div class="status pa3 tc">{{ info }}</div>{% endif %}
 
       <h3>Stats for today</h3>
-
-      {% for response in responses %}
-        <p class="lh-copy"><strong>{{ response.user.name }}</strong> - {{ response.selection }}</p>
-      {% endfor %}
+      <ol>
+        {% for response in responses %}
+          <li class="lh-copy"><strong>{{ response.user.name }}</strong> - {{ response.selection }}</li>
+        {% endfor %}
+      </ol>
+      <h5> Grouped Lists </h5>
+      <div id="myDiv"> </div>
     </div>
   </section>
-
-<script type="text/javascript">
-feather.replace();
-document.querySelector('section.options').addEventListener("click", function(e){
-  if (e.target && e.target.className == 'remove') {
-    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
-    return false;
-  }
-}, false);
-document.querySelector('.new_row').addEventListener("click", function(e){
-  var div = document.createElement('div');
-  div.className = 'relative';
-  div.innerHTML = '<input type="text" name="options[]" class="w-100 mv1"><a href="#" class="remove">x</a>';
-  document.querySelector('section.options').appendChild(div);
-}, false);
-</script>
-
+  <script src="js/responses.js"></script>
 </body>
 </html>

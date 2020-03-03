@@ -1,7 +1,7 @@
 const dbo = require('../lib/db.js')
-    , Slack = require('./slack.js')
-    , { WebClient } = require('@slack/client')
-    ;
+  , Slack = require('./slack.js')
+  , { WebClient } = require('@slack/client')
+  ;
 
 
 exports.updatePoll = async (team, token, data) => {
@@ -10,13 +10,13 @@ exports.updatePoll = async (team, token, data) => {
     let i = 0;
     for (const option of data.options) {
       options.push({
-                    text: {
-                      type: "plain_text",
-                      text: option,
-                      emoji: true
-                    },
-                    value: `${i}`
-                  });
+        text: {
+          type: "plain_text",
+          text: option,
+          emoji: true
+        },
+        value: `${i}`
+      });
       i++;
     }
 
@@ -30,7 +30,8 @@ exports.updatePoll = async (team, token, data) => {
         question: data.question,
         options: data.options,
         email: data.email,
-        channel: data.channel
+        channel: data.channel,
+        closingTime: data.closingTime
       }
     }, {
       upsert: true
@@ -38,51 +39,51 @@ exports.updatePoll = async (team, token, data) => {
 
     const slackAPI = new WebClient(token);
     const response = await slackAPI.chat.postMessage({
-          channel: data.channel
-          , blocks: [{
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: data.question
-            }
-          }, {
-            type: "actions",
-            elements: [
-              {
-                type: "static_select",
-                placeholder: {
-                  type: "plain_text",
-                  text: "Make your selection",
-                  emoji: true
-                },
-                options
-              }
-            ]
-          }]
-        });
+      channel: data.channel
+      , blocks: [{
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: data.question
+        }
+      }, {
+        type: "actions",
+        elements: [
+          {
+            type: "static_select",
+            placeholder: {
+              type: "plain_text",
+              text: "Make your selection",
+              emoji: true
+            },
+            options
+          }
+        ]
+      }]
+    });
 
     return response;
   }
-  catch(err) {
+  catch (err) {
     err = (err.message) ? err.message : err;
     throw new Error(err);
   }
 }
 
-exports.todaysPoll = async(id) => {
+exports.todaysPoll = async (id) => {
   try {
     return await dbo.db().collection('responses').find({
       team: id,
       day: (new Date()).toDateString()
     }).toArray();
   }
-  catch(err) {
+  catch (err) {
     err = (err.message) ? err.message : err;
     throw new Error(err);
   }
 }
 
-exports.log = async(body) => {
+exports.log = async (body) => {
 
   const user = body.user;
   const choice = body.actions[0].selected_option.value;
@@ -95,29 +96,32 @@ exports.log = async(body) => {
     });
 
     const slack = new WebClient(doc.token);
+    const getFoodCloseTime = doc.closingTime;
+    const foodBotCloseTime = new Date(getFoodCloseTime).getTime();
 
     // Closed?
-    if (doc.closed) {
+    if (doc.closed || foodBotCloseTime < new Date().getTime()) {
       return await slack.chat.postEphemeral({
         user: body.user.id
         , channel: body.channel.id
         , text: "FoodBot closed. No food for you 😛"
       });
     }
-
     await slack.chat.postEphemeral({
-        user: body.user.id
-        , channel: body.channel.id
-        , text: "Your choice has been logged 💥"
-      });
+      user: body.user.id
+      , channel: body.channel.id
+      , text: "Your choice has been logged 💥"
+    });
     const selection = doc.options[+choice];
+    const time = new Date().toLocaleTimeString();
 
     await dbo.db().collection('responses').updateOne({
-      day: (new Date()).toDateString(),
+      day: (new Date().toDateString()),
       'user.id': user.id,
       team: body.team.id
     }, {
       $set: {
+        time,
         selection,
         user
       }
@@ -125,7 +129,7 @@ exports.log = async(body) => {
       upsert: 1
     });//*/
   }
-  catch(err) {
+  catch (err) {
     err = (err.message) ? err.message : err;
     throw new Error(err);
   }
