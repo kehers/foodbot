@@ -76,7 +76,6 @@ module.exports = (router, passport) => {
   router.get('/dashboard', async (req, res) => {
     try {
       const responses = await Accounts.todaysPoll(req.user.team.id);
-      const property = "selection";
       if (responses && responses.length) {
         const groupBy = key => responses =>
           responses.reduce((accumulator, obj) => {
@@ -86,7 +85,7 @@ module.exports = (router, passport) => {
           }, {});
         const groupBySelection = groupBy('selection');
         const obj = JSON.stringify(groupBySelection(responses));
-        return res.render('poll-stats', render(req, {
+        res.render('poll-stats', render(req, {
           responses, obj
         }));
         const channels = await Slack.getChannels(req.user.token);
